@@ -1,20 +1,20 @@
 bitmathng
 =========
  
-`bitmathng` is a modified and 'modernized' fork of the original 
+``bitmathng`` is a modified and 'modernized' fork of the original 
 _`bitmath <http://bitmath.readthedocs.org/en/latest/>`_ library, and 
 begins at version 2.0.
 
-The following is the original details of the `bitmath` README, left unchanged,
-except for components such as the `click`, `argparse`, and `progressbar` 
-integrations which are removed from `bitmathng`.
+The following is the original details of the ``bitmath`` README, left unchanged,
+except for components such as the ``click``, ``argparse``, and ``progressbar`` 
+integrations which are removed from ``bitmathng``.
 
 ---
 
 bitmath
 =======
 
-_`bitmath <http://bitmath.readthedocs.org/en/latest/>`_ simplifies many
+_``bitmath <http://bitmath.readthedocs.org/en/latest/>``_ simplifies many
 facets of interacting with file sizes in various units. Originally
 focusing on file size unit conversion, functionality now includes:
 
