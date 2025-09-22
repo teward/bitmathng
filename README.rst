@@ -1,26 +1,20 @@
-.. image:: https://api.travis-ci.org/tbielawa/bitmath.png
-   :target: https://travis-ci.org/tbielawa/bitmath/
-   :align: right
-   :height: 19
-   :width: 77
+bitmathng
+=========
+ 
+`bitmathng` is a modified and 'modernized' fork of the original 
+_`bitmath <http://bitmath.readthedocs.org/en/latest/>`_ library, and 
+begins at version 2.0.
 
-.. image:: https://coveralls.io/repos/tbielawa/bitmath/badge.png?branch=master
-   :target: https://coveralls.io/r/tbielawa/bitmath?branch=master
-   :align: right
-   :height: 19
-   :width: 77
+The following is the original details of the `bitmath` README, left unchanged,
+except for components such as the `click`, `argparse`, and `progressbar` 
+integrations which are removed from `bitmathng`.
 
-.. image:: https://readthedocs.org/projects/bitmath/badge/?version=latest
-   :target: http://bitmath.rtfd.org/
-   :align: right
-   :height: 19
-   :width: 77
-
+---
 
 bitmath
 =======
 
-`bitmath <http://bitmath.readthedocs.org/en/latest/>`_ simplifies many
+_`bitmath <http://bitmath.readthedocs.org/en/latest/>`_ simplifies many
 facets of interacting with file sizes in various units. Originally
 focusing on file size unit conversion, functionality now includes:
 
@@ -31,12 +25,6 @@ focusing on file size unit conversion, functionality now includes:
 * Rich comparison operations (``1024 Bytes == 1KiB``)
 * bitwise operations (``<<``, ``>>``, ``&``, ``|``, ``^``)
 * Reading a device's storage capacity (Linux/OS X support only)
-* `argparse <https://docs.python.org/2/library/argparse.html>`_
-  integration as a custom type
-* `click <https://click.palletsprojects.com/>`_
-  integration as a custom parameter type
-* `progressbar <https://code.google.com/p/python-progressbar/>`_
-  integration as a better file transfer speed widget
 * String parsing
 * Sorting
 
@@ -160,9 +148,6 @@ Topics include:
   * Utility Functions
   * Context Managers
   * Module Variables
-  * ``argparse`` integration
-  * ``click`` integration
-  * ``progressbar`` integration
 
 * The ``bitmath`` command-line Tool
 
@@ -435,92 +420,3 @@ Formatting
    [1.000@KiB]
    [38.000@Byte]
    [10.000@Byte]
-
-``argparse`` Integration
-------------------------
-
-Example script using ``bitmath.integrations.bmargparse.BitmathType`` as an
-argparser argument type:
-
-.. code-block:: python
-
-   import argparse
-   from bitmath.integrations.bmargparse import BitmathType
-   parser = argparse.ArgumentParser(
-       description="Arg parser with a bitmath type argument")
-   parser.add_argument('--block-size',
-                       type=BitmathType,
-                       required=True)
-
-   results = parser.parse_args()
-   print "Parsed in: {PARSED}; Which looks like {TOKIB} as a Kibibit".format(
-       PARSED=results.block_size,
-       TOKIB=results.block_size.Kib)
-
-If ran as a script the results would be similar to this:
-
-.. code-block:: bash
-
-   $ python ./bmargparse.py --block-size 100MiB
-   Parsed in: 100.0 MiB; Which looks like 819200.0 Kib as a Kibibit
-
-``click`` Integration
----------------------
-
-Example script using ``bitmath.integrations.bmclick.BitmathType`` as an
-click parameter type:
-
-.. code-block:: python
-
-   import click
-   from bitmath.integrations.bmclick import BitmathType
-
-   @click.command()
-   @click.argument('size', type=BitmathType())
-   def best_prefix(size):
-      click.echo(size.best_prefix())
-
-If ran as a script the results should be similar to this:
-
-.. code-block:: bash
-
-   $ python ./bestprefix.py "1024 KiB"
-   1.0 MiB
-
-``progressbar`` Integration
----------------------------
-
-Use ``bitmath.integrations.bmprogressbar.BitmathFileTransferSpeed`` as a
-``progressbar`` file transfer speed widget to monitor download speeds:
-
-.. code-block:: python
-
-   import requests
-   import progressbar
-   import bitmath
-   from bitmath.integrations.bmprogressbar import BitmathFileTransferSpeed
-
-   FETCH = 'https://www.kernel.org/pub/linux/kernel/v3.0/patch-3.16.gz'
-   widgets = ['Bitmath Progress Bar Demo: ', ' ',
-              progressbar.Bar(marker=progressbar.RotatingMarker()), ' ',
-              BitmathFileTransferSpeed()]
-
-   r = requests.get(FETCH, stream=True)
-   size = bitmath.Byte(int(r.headers['Content-Length']))
-   pbar = progressbar.ProgressBar(widgets=widgets, maxval=int(size),
-                                  term_width=80).start()
-   chunk_size = 2048
-   with open('/dev/null', 'wb') as fd:
-       for chunk in r.iter_content(chunk_size):
-           fd.write(chunk)
-           if (pbar.currval + chunk_size) < pbar.maxval:
-               pbar.update(pbar.currval + chunk_size)
-   pbar.finish()
-
-
-If ran as a script the results would be similar to this:
-
-.. code-block:: bash
-
-   $ python ./smalldl.py
-   Bitmath Progress Bar Demo:  ||||||||||||||||||||||||||||||||||||||||| 1.58 MiB/s
