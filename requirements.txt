@@ -5,3 +5,5 @@ nose
 nose-cover3
 pyflakes
 pycodestyle
+progressbar231
+click
